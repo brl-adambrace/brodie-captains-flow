@@ -1555,6 +1555,11 @@ function selectLocation(name, cardEl) {
   // open When
   document.getElementById('when-collapsed').style.display = 'none';
   document.getElementById('when-expanded').style.display = 'block';
+  // default to the first day so a day is always selected before picking a skill level
+  if (!document.querySelector('#when-expanded .day-chip.active')) {
+    const firstDay = document.querySelector('#when-expanded .day-chip');
+    if (firstDay) selectDay(firstDay);
+  }
   updateLeagueContinue();
 }
 
