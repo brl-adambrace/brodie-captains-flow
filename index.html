@@ -1493,16 +1493,15 @@ function selectRegion(btn, region) {
 function renderLocations() {
   const list = document.getElementById('loc-list');
   if (!list) return;
-  const items = LOCATIONS.filter(l => l.c === flowState.country && (flowState.region === 'All' || l.r === flowState.region));
+  const items = LOCATIONS.filter(l => l.c === flowState.country && (flowState.region === 'All' || l.r === flowState.region) && offers(l, flowState.gender));
   list.innerHTML = items.map(l => {
-    const st = !offers(l, flowState.gender) ? 'unavailable' : (l.s || 'open');
+    const st = l.s || 'open';   // venues that don't offer this league are filtered out above
     const selectable = (st === 'open' || st === 'warn');
     const cls = 'loc-card' + (selectable ? '' : ' full') + (flowState.location === l.n ? ' selected' : '');
     const click = selectable ? `onclick="selectLocation('${l.n}', this)"` : '';
     let badge = '';
     if (st === 'warn') badge = '<span class="badge badge-warn">⚠ Filling up</span>';
     else if (st === 'full') badge = '<span class="badge badge-full">● Full</span>';
-    else if (st === 'unavailable') badge = '<span class="badge badge-full">No 35+ here</span>';
     return `<div class="${cls}" ${click}>
         <div class="loc-thumb">BRODIE REC.<br>${l.n.toUpperCase()}</div>
         <div>
