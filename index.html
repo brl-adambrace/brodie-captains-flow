@@ -659,11 +659,28 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 .checkbox-box { width: 18px; height: 18px; border: 1.5px solid var(--border-strong); border-radius: 4px; flex-shrink: 0; position: relative; background: var(--surface-default); }
 .checkbox-row.checked .checkbox-box { background: var(--text-primary); border-color: var(--text-primary); }
 .checkbox-row.checked .checkbox-box::after { content: "✓"; position: absolute; inset: 0; color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-.pay-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pay-methods { display: flex; gap: 8px; }
+.pay-methods .pay-method { flex: 1; min-width: 0; }
 .pay-method { border: 1px solid var(--border-default); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 10px; font-size: 14px; background: var(--surface-default); font-family: var(--font); text-align: left; color: var(--text-primary); }
 .pay-method.active { border-color: var(--accent-blue); box-shadow: 0 0 0 1px var(--accent-blue); }
 .pay-method .pm-ic { color: var(--text-tertiary); display: flex; }
 .legal { font-size: 11px; color: var(--text-tertiary); line-height: 1.45; }
+
+/* Auth embedded in the checkout */
+#checkout-auth { margin-bottom: 4px; }
+.ca-email-field { position: relative; }
+.ca-email-field input { padding-right: 52px; }
+.ca-email-go { position: absolute; right: 7px; top: 7px; bottom: 7px; width: 34px; border: none; border-radius: 6px; background: var(--btn-primary-bg); color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.ca-email-go:hover { opacity: .85; }
+.ca-or { text-align: center; font-size: 13px; color: var(--text-tertiary); margin: 12px 0; }
+.ca-box { background: var(--surface-sunken); border-radius: var(--radius-card); padding: 20px; }
+.ca-change { background: none; border: none; padding: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--text-secondary); cursor: pointer; }
+.ca-change:hover { color: var(--text-primary); }
+.ca-verify-text { font-size: 14px; line-height: 1.45; margin: 12px 0 16px; }
+.ca-verify-text strong { font-weight: 600; }
+.ca-box .otp-row { margin-bottom: 4px; }
+.ca-helper { font-size: 13px; color: var(--text-tertiary); margin: 12px 0 16px; line-height: 1.45; }
+.ca-welcome { margin-top: 12px; align-items: flex-start; }
 
 /* ─────────────────────────────────────────────
    Confirmation (dark)
@@ -784,11 +801,8 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
   <button onclick="showTeamError()">Err: name taken</button>
   <button onclick="setJerseyDeadline('closing'); show('team-new');">Jersey: closing</button>
   <button onclick="setJerseyDeadline('passed'); show('team-new');">Jersey: passed</button>
-  <button id="tb-auth-login" onclick="show('auth-login')">Sign in</button>
-  <button id="tb-auth-create" onclick="show('auth-create')">Create acct</button>
-  <button id="tb-auth-otp" onclick="show('auth-otp')">OTP</button>
-  <button id="tb-checkout" onclick="show('checkout')">Checkout</button>
-  <button id="tb-confirm" onclick="show('confirm')">Confirmation</button>
+  <button id="tb-checkout" onclick="populateCheckout(); show('checkout')">Checkout</button>
+  <button id="tb-confirm" onclick="populateConfirm(); show('confirm')">Confirmation</button>
 </div>
 
 
@@ -949,70 +963,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 </div>
 
 
-<!-- ═══════════════════════════════════════════
-     SCREEN — Auth / Sign in  (Figma "Sign-In" 591:4319 · ported from auth prototype)
-════════════════════════════════════════════ -->
-<div class="screen auth" id="screen-auth-login">
-  <div class="auth-wrap">
-    <span class="auth-logo logo-slot"></span>
-    <p class="auth-heading">Sign in or create an account</p>
-    <button class="auth-back" onclick="show('team-new')">← Back</button>
-    <div class="auth-form">
-      <div class="field"><label class="field-label" for="auth-email">Email</label><input type="email" id="auth-email" placeholder="brodie@brodierec.com" autocomplete="email"></div>
-    </div>
-    <div class="auth-btns">
-      <button class="btn btn-primary" onclick="handleAuthLogin(this)"><span class="btn-label">Continue →</span><div class="btn-spinner"></div></button>
-      <button class="btn btn-ghost" onclick="authGoogle()"><svg class="google-icon" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908C16.658 14.252 17.64 11.945 17.64 9.2z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg> Continue with Google</button>
-    </div>
-    <button class="auth-link" onclick="show('auth-create')">Create an account</button>
-  </div>
-</div>
-
-<!-- SCREEN — Auth / Create account -->
-<div class="screen auth" id="screen-auth-create">
-  <div class="auth-wrap">
-    <span class="auth-logo logo-slot"></span>
-    <p class="auth-heading">Create an account</p>
-    <div class="auth-form">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="field"><label class="field-label">First Name</label><input id="auth-c-first" type="text" placeholder="Adam"></div>
-        <div class="field"><label class="field-label">Last Name</label><input id="auth-c-last" type="text" placeholder="Brace"></div>
-      </div>
-      <div class="field"><label class="field-label">Email</label><input id="auth-c-email" type="email" placeholder="brodie@brodierec.com"></div>
-      <div class="field"><label class="field-label">Phone</label><input id="auth-c-phone" type="tel" placeholder="(555) 123-4567"></div>
-    </div>
-    <div class="auth-btns">
-      <button class="btn btn-primary" onclick="handleAuthCreate(this)"><span class="btn-label">Continue →</span><div class="btn-spinner"></div></button>
-    </div>
-    <button class="auth-link" onclick="show('auth-login')">Already have an account? Sign in</button>
-  </div>
-</div>
-
-<!-- SCREEN — Auth / Verify email (OTP) -->
-<div class="screen auth" id="screen-auth-otp">
-  <div class="auth-wrap">
-    <span class="auth-logo logo-slot"></span>
-    <p class="auth-heading">Verify your email</p>
-    <button class="auth-back" onclick="show('auth-login')">← Go back</button>
-    <div class="auth-form">
-      <p class="auth-sub">We sent a one-time passcode to <strong id="auth-otp-email">your email</strong></p>
-      <div class="otp-row" id="auth-otp-row">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-        <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
-      </div>
-    </div>
-    <div class="auth-btns">
-      <button class="btn btn-primary" onclick="handleAuthOtp(this)"><span class="btn-label">Continue →</span><div class="btn-spinner"></div></button>
-      <button class="btn btn-ghost" onclick="handleAuthResend(this)">Resend code</button>
-    </div>
-  </div>
-</div>
-
-<!-- (Auth success screen removed — OTP / Google verification routes straight to checkout, or back to teams when signed in from the Existing-Team prompt) -->
+<!-- Auth now lives inside the Checkout step — no separate sign-in / sign-up screens. -->
 
 
 <!-- ═══════════════════════════════════════════
@@ -1170,7 +1121,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
       <!-- signed out → prompt to sign in (anonymous captains can't see teams yet) -->
       <div id="ex-signedout" class="signin-prompt">
         <div class="signin-prompt-text">Sign in to see your existing teams</div>
-        <button class="btn btn-primary btn-sm" onclick="startAuth('team-existing')"><span class="btn-label">Sign In</span></button>
+        <button class="btn btn-primary btn-sm" onclick="signedIn = true; renderExistingTab();"><span class="btn-label">Sign In</span></button>
       </div>
       <!-- signed in + has teams → choose one -->
       <div id="ex-teams" style="display:none;">
@@ -1281,6 +1232,37 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
       </div>
 
       <div class="pay-portal">
+        <div id="checkout-auth">
+          <div id="ca-email">
+            <div class="field"><label class="field-label">Enter Email</label>
+              <div class="ca-email-field">
+                <input type="email" id="ca-email-input" placeholder="brodie@brodierec.com" autocomplete="email" oninput="this.classList.remove('input-error')" onkeydown="if(event.key==='Enter'){event.preventDefault();checkoutEmailSubmit();}">
+                <button class="ca-email-go" onclick="checkoutEmailSubmit()" aria-label="Continue">→</button>
+              </div>
+            </div>
+            <div class="ca-or">Or</div>
+            <button class="btn btn-ghost" style="width:100%;" onclick="checkoutGoogle()"><svg class="google-icon" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.717v2.258h2.908C16.658 14.252 17.64 11.945 17.64 9.2z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg> Continue with Google</button>
+          </div>
+          <div id="ca-otp" class="ca-box" style="display:none;">
+            <button class="ca-change" onclick="checkoutChangeEmail()">← Change Email</button>
+            <p class="ca-verify-text">Verify your email. We sent a one-time passcode to <strong id="ca-otp-email">a***@brodierec.com</strong></p>
+            <div class="otp-row" id="ca-otp-row">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+              <input class="otp-box" maxlength="1" type="tel" inputmode="numeric">
+            </div>
+            <p class="ca-helper" id="ca-otp-helper">We will use this email to set up your Brodie account.</p>
+            <button class="btn btn-ghost" style="width:100%;" onclick="checkoutResend(this)">Resend Code</button>
+          </div>
+          <div id="ca-done" style="display:none;">
+            <div class="field"><label class="field-label">Enter Email</label><input type="email" id="ca-done-email" disabled></div>
+            <div class="banner banner-info ca-welcome"><div class="banner-icon">i</div> <span id="ca-welcome-text">Welcome back, complete payment to confirm your registration.</span></div>
+          </div>
+        </div>
+
         <div class="promo-row">
           <label>Add a Promo Code</label>
           <input type="text" placeholder="Promo Code">
@@ -1300,7 +1282,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
         <div class="checkbox-row" onclick="toggleCheck(this)"><span class="checkbox-box"></span> Pay for the full team</div>
 
         <div class="pay-methods">
-          <button class="pay-method" onclick="pickOne(this)"><span class="pm-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/></svg></span> Saved</button>
+          <button class="pay-method" id="pm-saved" style="display:none;" onclick="pickOne(this)"><span class="pm-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.6"/></svg></span> Saved</button>
           <button class="pay-method" onclick="pickOne(this)"><span class="pm-ic" style="font-family:var(--font-mono);font-size:12px;font-weight:600;">G&nbsp;Pay</span> Google Pay</button>
           <button class="pay-method active" onclick="pickOne(this)"><span class="pm-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M2 9h20" stroke="currentColor" stroke-width="1.6"/></svg></span> Card</button>
         </div>
@@ -1376,7 +1358,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 
 <script>
 /* ─── Screen routing (mirrors auth prototype) ─── */
-const ALL = ['landing','auth-login','auth-create','auth-otp','league','team-new','checkout','confirm'];
+const ALL = ['landing','league','team-new','checkout','confirm'];
 
 function show(name) {
   ALL.forEach(id => {
@@ -1790,8 +1772,7 @@ function handleTeamContinue(btn) {
       : (document.getElementById('team-name-input').value.trim() || 'Your Team');
     flowState.size = document.getElementById('u-size').value || '—';
     flowState.number = document.getElementById('u-number').value;
-    if (signedIn) { populateCheckout(); show('checkout'); }   // already signed in → straight to checkout
-    else { startAuth('checkout'); }                            // anonymous → auth gate, then checkout
+    populateCheckout(); show('checkout');
   }, 600);
 }
 function fillNumbers() {
@@ -1822,9 +1803,11 @@ function populateCheckout() {
   set('co-loc-name', s.loc.n); set('co-loc-addr', s.loc.a);
   set('co-league', s.league); set('co-league-sub', `${s.dayFull}s ${s.time}`.trim());
   set('co-team', s.team); set('co-uniform', s.uniform);
+  initCheckoutAuth();
 }
 
 function handleConfirmPay(btn) {
+  if (checkoutAuthStage !== 'done') return;
   btn.classList.add('loading');
   setTimeout(() => {
     btn.classList.remove('loading');
@@ -1850,17 +1833,14 @@ function copyCode(btn) {
   setTimeout(() => { lbl.textContent = orig; }, 1500);
 }
 
-/* ─── Auth (entry gate) ─── */
+/* ─── Auth embedded in the Checkout step ─── */
+const USER_FIRST = 'Adam';
 let signedIn = false;        // captains are anonymous until they verify
 let hasTeams = true;         // demo: a signed-in captain has existing teams
-let authReturn = 'checkout'; // where to go after auth: 'checkout' | 'team-existing'
-let authEmail = '';
-function startAuth(returnTo) { authReturn = returnTo || 'checkout'; show('auth-login'); }
-function finishAuth() {
-  signedIn = true;
-  if (authReturn === 'team-existing') { setTeamMode('existing'); show('team-new'); }
-  else { populateCheckout(); show('checkout'); }
-}
+let checkoutEmail = '';
+let checkoutAuthStage = 'email';      // 'email' | 'otp' | 'done'
+let checkoutAccountKnown = false;
+const KNOWN_EMAILS = ['adam.brace@brodierec.com', 'adam@brodierec.com'];
 function renderExistingTab() {
   const so = document.getElementById('ex-signedout');
   const tm = document.getElementById('ex-teams');
@@ -1875,42 +1855,87 @@ function renderExistingTab() {
   }
   updateTeamReady();
 }
-function setAuthOtpEmail() { const e = document.getElementById('auth-otp-email'); if (e) e.textContent = authEmail || 'your email'; }
-function handleAuthLogin(btn) {
-  const inp = document.getElementById('auth-email');
-  const v = inp.value.trim();
-  if (!v) return;
+function maskEmail(e) {
+  const [u, d] = String(e).split('@');
+  if (!u) return 'your email';
+  return u[0] + '*'.repeat(Math.max(3, u.length - 1)) + '@' + (d || 'brodierec.com');
+}
+function initCheckoutAuth() {
+  if (signedIn) {
+    checkoutAuthStage = 'done'; checkoutAccountKnown = true;
+    checkoutEmail = checkoutEmail || 'adam.brace@brodierec.com';
+  } else {
+    checkoutAuthStage = 'email'; checkoutEmail = '';
+    const i = document.getElementById('ca-email-input'); if (i) { i.value = ''; i.classList.remove('input-error'); }
+    document.querySelectorAll('#ca-otp-row .otp-box').forEach(b => { b.value = ''; });
+  }
+  renderCheckoutAuth();
+}
+function renderCheckoutAuth() {
+  const stage = checkoutAuthStage;
+  document.getElementById('ca-email').style.display = stage === 'email' ? 'block' : 'none';
+  document.getElementById('ca-otp').style.display = stage === 'otp' ? 'block' : 'none';
+  document.getElementById('ca-done').style.display = stage === 'done' ? 'block' : 'none';
+  if (stage === 'otp') {
+    set('ca-otp-email', maskEmail(checkoutEmail));
+    set('ca-otp-helper', checkoutAccountKnown
+      ? 'Welcome back. Verify your email to complete payment with your saved cards.'
+      : 'We will use this email to set up your Brodie account.');
+  }
+  if (stage === 'done') {
+    const de = document.getElementById('ca-done-email'); if (de) de.value = checkoutEmail;
+    set('ca-welcome-text', checkoutAccountKnown
+      ? `Welcome back ${USER_FIRST}, complete payment to confirm your registration.`
+      : `You're all set, ${USER_FIRST} — complete payment to confirm your registration.`);
+  }
+  updateCheckoutPayState();
+}
+function updateCheckoutPayState() {
+  const done = checkoutAuthStage === 'done';
+  const saved = document.getElementById('pm-saved');
+  const methods = document.querySelectorAll('.pay-methods .pay-method');
+  if (saved) {
+    if (done && checkoutAccountKnown) {
+      saved.style.display = '';
+      methods.forEach(m => m.classList.remove('active'));
+      saved.classList.add('active');
+    } else {
+      saved.style.display = 'none';
+      saved.classList.remove('active');
+      if (!document.querySelector('.pay-methods .pay-method.active')) {
+        const last = methods[methods.length - 1]; if (last) last.classList.add('active');
+      }
+    }
+  }
+  const btn = document.getElementById('checkout-confirm');
+  if (btn) { btn.disabled = !done; btn.classList.toggle('disabled', !done); }
+}
+function checkoutEmailSubmit() {
+  const inp = document.getElementById('ca-email-input'); const v = inp.value.trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { inp.classList.add('input-error'); return; }
-  inp.classList.remove('input-error');
-  authEmail = v; setAuthOtpEmail();
-  btn.classList.add('loading');
-  setTimeout(() => { btn.classList.remove('loading'); show('auth-otp'); }, 600);
+  checkoutEmail = v; checkoutAccountKnown = KNOWN_EMAILS.includes(v.toLowerCase());
+  checkoutAuthStage = 'otp'; renderCheckoutAuth();
+  setTimeout(() => { const f = document.querySelector('#ca-otp-row .otp-box'); if (f) f.focus(); }, 60);
 }
-function handleAuthCreate(btn) {
-  const first = document.getElementById('auth-c-first').value.trim();
-  const email = document.getElementById('auth-c-email').value.trim();
-  if (!first || !email) return;
-  authEmail = email; setAuthOtpEmail();
-  btn.classList.add('loading');
-  setTimeout(() => { btn.classList.remove('loading'); show('auth-otp'); }, 600);
+function checkoutChangeEmail() { checkoutAuthStage = 'email'; renderCheckoutAuth(); }
+function checkoutGoogle() {
+  checkoutEmail = 'adam.brace@brodierec.com'; checkoutAccountKnown = true;
+  signedIn = true; checkoutAuthStage = 'done'; renderCheckoutAuth();
 }
-function handleAuthOtp(btn) {
-  const code = Array.from(document.querySelectorAll('#auth-otp-row .otp-box')).map(b => b.value).join('');
-  if (code.length < 6) return;
-  btn.classList.add('loading');
-  setTimeout(() => { btn.classList.remove('loading'); finishAuth(); }, 600);   // skip success screen → straight to destination
-}
-function handleAuthResend(btn) {
+function checkoutOtpComplete() { signedIn = true; checkoutAuthStage = 'done'; renderCheckoutAuth(); }
+function checkoutResend(btn) {
   const orig = btn.textContent; btn.disabled = true; let t = 30;
-  const iv = setInterval(() => { t--; btn.textContent = t > 0 ? `Resend code (0:${String(t).padStart(2,'0')})` : orig; if (t <= 0) { clearInterval(iv); btn.disabled = false; } }, 1000);
+  const iv = setInterval(() => { t--; btn.textContent = t > 0 ? `Resend Code (0:${String(t).padStart(2, '0')})` : orig; if (t <= 0) { clearInterval(iv); btn.disabled = false; } }, 1000);
 }
-function authGoogle() { finishAuth(); }
-function initAuthOtp() {
-  const row = document.getElementById('auth-otp-row');
-  if (!row) return;
+function initCheckoutOtp() {
+  const row = document.getElementById('ca-otp-row'); if (!row) return;
   const boxes = row.querySelectorAll('.otp-box');
   boxes.forEach((box, i) => {
-    box.addEventListener('input', () => { if (box.value.length === 1 && i < boxes.length - 1) boxes[i + 1].focus(); });
+    box.addEventListener('input', () => {
+      if (box.value.length === 1 && i < boxes.length - 1) boxes[i + 1].focus();
+      const code = Array.from(boxes).map(b => b.value).join('');
+      if (code.length === 6) setTimeout(checkoutOtpComplete, 250);
+    });
     box.addEventListener('keydown', e => { if (e.key === 'Backspace' && !box.value && i > 0) boxes[i - 1].focus(); });
   });
 }
@@ -1922,7 +1947,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRegions(flowState.country);
   renderLocations();
   renderJerseys();
-  initAuthOtp();
+  initCheckoutOtp();
   show('landing');
   initCountdown();
 });
