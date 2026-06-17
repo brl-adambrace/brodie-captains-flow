@@ -948,7 +948,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
         <div class="cd-avatar">
           <svg viewBox="0 0 47 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31.192 6.88118C30.3879 9.21186 24.3262 8.63188 21.6537 8.70505C21.5855 8.707 21.4994 8.75578 21.4622 8.81333L18.9497 12.6747C18.8168 12.8791 18.9057 13.0464 19.1485 13.0464C21.1145 13.0459 23.7595 13.0469 25.6274 13.0464C28.4726 13.423 27.7313 17.159 24.2034 16.9361C20.821 16.9414 13.8856 16.9375 13.8856 16.9375C13.8856 16.9375 18.2955 10.0675 20.1634 7.08362C20.2901 6.88118 20.1992 6.71582 19.9618 6.71582H9.8389C9.76734 6.71582 9.67788 6.76509 9.6392 6.82557C6.94008 11.0562 1.28993 19.7394 0.0612565 21.6257C-0.0707497 21.8282 0.017738 21.9945 0.258057 21.9955C2.86095 22.0087 9.82778 21.9843 17.1636 21.9926C27.8894 22.0043 35.1909 22.0013 38.2033 16.3122C39.9305 13.0503 35.8079 10.2011 33.8863 10.1006C36.4747 10.2362 39.1689 8.92455 40.9595 6.8485C41.0219 6.77631 40.9938 6.71582 40.899 6.71582H31.4173C31.3225 6.71582 31.2229 6.79094 31.1915 6.88118H31.192Z" fill="currentColor"/><path d="M41.7676 4.70185C42.3039 2.13215 39.9872 0.195605 37.5478 0H10.5527C10.4807 0 10.3898 0.0502428 10.3511 0.111217C9.42272 1.56436 8.47111 2.9931 7.53885 4.44088C7.44601 4.58526 7.50935 4.7038 7.68053 4.7038C15.8697 4.69794 41.5345 4.7038 41.7657 4.7038C41.7671 4.7038 41.7676 4.70282 41.7681 4.70136L41.7676 4.70185Z" fill="currentColor"/></svg>
         </div>
-        <div class="cd-title">Brodie Summer Begins June 10th</div>
+        <div class="cd-title">Brodie Summer Begins June 17th</div>
         <div class="countdown" id="landing-countdown">
           <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-lbl">Days</div></div>
           <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-lbl">Hours</div></div>
@@ -1462,7 +1462,19 @@ function show(name) {
 
 /* ─── Landing season countdown ─── */
 function initCountdown() {
-  const target = new Date('2026-06-10T00:00:00');
+  // Always count down to the next upcoming Wednesday so the timer never goes stale.
+  const target = (function () {
+    const n = new Date();
+    const t = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+    let add = (3 - t.getDay() + 7) % 7; if (add === 0) add = 7;   // 3 = Wed; roll a week if today is Wed
+    t.setDate(t.getDate() + add);
+    const M = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const dd = t.getDate(), ord = (dd % 10 === 1 && dd !== 11) ? 'st' : (dd % 10 === 2 && dd !== 12) ? 'nd' : (dd % 10 === 3 && dd !== 13) ? 'rd' : 'th';
+    const label = M[t.getMonth()] + ' ' + dd + ord;
+    document.querySelectorAll('.cd-title').forEach(function (e) { e.textContent = 'Brodie Summer Begins ' + label; });
+    document.querySelectorAll('.wtp-desc').forEach(function (e) { e.textContent = 'Brodie Summer Tips Off ' + label; });
+    return t;
+  })();
   const els = {
     d: document.getElementById('cd-days'),
     h: document.getElementById('cd-hours'),
