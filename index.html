@@ -637,6 +637,83 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 .jersey-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; color: var(--text-secondary); }
 .jersey-photo-note { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; font-size: 8px; letter-spacing: .04em; opacity: 0.4; }
 
+/* ── Uniform styles — shade-balanced ranking (spec: uniform-shade-balance) ── */
+.jz-picker { margin-top: 22px; }
+.jz-head { margin-bottom: 14px; }
+.jz-heading { font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0; }
+.jz-rule { font-size: 14px; color: var(--text-secondary); margin: 6px 0 0; display: flex; align-items: center; gap: 8px; }
+.jz-info { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--surface-default); color: var(--text-secondary); font-family: var(--font-mono); font-size: 11px; font-style: italic; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; }
+.jz-info:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+.jz-reason { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; padding: 10px 12px; background: var(--surface-sunken); border-radius: var(--radius-field); line-height: 1.45; }
+
+.jz-tray { position: sticky; top: 8px; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 9px 10px; margin-bottom: 14px; background: var(--page-bg); border-radius: 14px; box-shadow: 0 8px 14px -10px rgba(0,0,0,0.22); }
+.jz-slot { position: relative; width: 60px; height: 60px; flex: 0 0 60px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.jz-slot.empty { border: 1.5px dashed var(--border-strong); background: var(--surface-default); }
+.jz-slot.empty .jz-slot-n { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
+.jz-slot.filled { border: 1px solid var(--text-primary); background: var(--surface-default); cursor: pointer; padding: 0; overflow: hidden; }
+.jz-slot.filled img { width: 100%; height: 100%; object-fit: contain; background: #f5f4f4; }
+.jz-slot-rank { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--charcoal); color: #fff; font-family: var(--font); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 2; }
+.jz-slot-x { position: absolute; top: 1px; right: 4px; font-size: 14px; line-height: 1; color: var(--text-tertiary); opacity: 0; transition: opacity .12s; }
+.jz-slot.filled:hover .jz-slot-x { opacity: 1; }
+
+.jz-meters { display: flex; gap: 10px; margin-bottom: 12px; }
+.jz-meter { flex: 1; display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: var(--radius-field); background: var(--surface-default); border: 1px solid var(--border-default); }
+.jz-meter-k { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.jz-pips { display: inline-flex; gap: 4px; margin-left: auto; }
+.jz-pip { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--border-strong); background: transparent; }
+.jz-pip.opt { border-style: dotted; }
+.jz-pip.on { background: var(--charcoal); border-color: var(--charcoal); }
+.jz-meter-c { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; min-width: 26px; text-align: right; }
+.jz-meter.short { border-color: var(--warn-border); background: var(--warn-bg); }
+.jz-meter.short .jz-pip.on { background: var(--accent-yellow); border-color: var(--accent-yellow); }
+.jz-meter.short .jz-meter-k { color: var(--warn-text); }
+.jz-meter.capped .jz-pip.on { background: var(--iron); border-color: var(--iron); }
+.jz-meter.ok { border-color: rgba(26,122,63,0.4); }
+.jz-meter.ok .jz-pip.on { background: var(--ok-text); border-color: var(--ok-text); }
+.jz-meter.ok .jz-meter-k { color: var(--ok-text); }
+
+.jz-status { font-size: 14px; color: var(--text-secondary); min-height: 20px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.jz-status-text { flex: 1; min-width: 0; }
+.jz-status-count { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.jz-status-count.ok { color: var(--ok-text); }
+
+.jz-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface-sunken); border-radius: 12px; padding: 6px; margin-bottom: 14px; }
+.jz-tab { display: flex; align-items: center; gap: 9px; padding: 11px 14px; border: 1px solid transparent; border-radius: 9px; background: transparent; font-family: var(--font); font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+.jz-tab.active { background: var(--surface-default); border-color: var(--text-primary); box-shadow: var(--tab-shadow); color: var(--text-primary); }
+.jz-tab .jz-pips { margin-left: auto; }
+.jz-tab.short .jz-pip.on { background: var(--accent-yellow); border-color: var(--accent-yellow); }
+.jz-tab.capped .jz-pip.on { background: var(--iron); border-color: var(--iron); }
+.jz-tab.ok .jz-pip.on { background: var(--ok-text); border-color: var(--ok-text); }
+
+.jz-gridwrap { display: flex; flex-direction: column; gap: 6px; }
+.jz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.jz-lockrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 12px; font-size: 13px; color: var(--warn-text); margin-bottom: 6px; }
+.jz-jump { border: 1px solid var(--warn-text); background: transparent; color: var(--warn-text); font-family: var(--font); font-size: 12px; font-weight: 600; padding: 6px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.jz-jump:hover { background: var(--warn-text); color: #fff; }
+.jz-card { position: relative; border: 1px solid var(--border-default); border-radius: 12px; padding: 12px 12px 10px; background: var(--surface-default); cursor: pointer; text-align: left; font-family: var(--font); transition: border-color .15s, box-shadow .15s; display: flex; flex-direction: column; }
+.jz-card:hover:not(.disabled):not(.taken) { border-color: var(--border-strong); }
+.jz-card.selected { border-color: var(--text-primary); box-shadow: 0 0 0 1px var(--text-primary); }
+.jz-card.disabled { opacity: .42; cursor: not-allowed; }
+.jz-card.taken { opacity: .5; cursor: not-allowed; }
+.jz-mark { position: absolute; top: 10px; left: 10px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-size: 11px; font-weight: 700; color: transparent; background: transparent; z-index: 2; }
+.jz-mark.on { background: var(--charcoal); color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.jz-card-img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #f5f4f4; border-radius: 8px; margin-bottom: 8px; }
+.jz-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.jz-card-name { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-secondary); }
+.jz-chip { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: .06em; padding: 3px 7px; border-radius: 999px; flex-shrink: 0; }
+.jz-chip-light { background: #f2efec; color: #6b6765; border: 1px solid var(--border-strong); }
+.jz-chip-dark { background: var(--charcoal); color: #fff; }
+.jz-chip-taken { background: transparent; color: var(--text-tertiary); border: 1px solid var(--border-strong); }
+.jz-taken-divider { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-tertiary); margin: 14px 0 4px; padding-top: 12px; border-top: 1px solid var(--border-default); }
+
+@keyframes jz-nudge { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+.jz-card.nudge { animation: jz-nudge .34s ease; }
+@media (prefers-reduced-motion: reduce) { .jz-card.nudge { animation: none; } }
+
+.btn.locked { background: var(--btn-disabled-bg); color: var(--btn-disabled-text); cursor: pointer; box-shadow: none; }
+.btn.locked:hover { background: var(--btn-disabled-bg); }
+@media (max-width: 560px) { .jz-meters { flex-direction: column; gap: 8px; } }
+
 /* ─────────────────────────────────────────────
    Checkout
    ───────────────────────────────────────────── */
@@ -1228,18 +1305,24 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
       </div>
     </div>
 
-    <div class="jersey-head">
-      <span class="jersey-head-label">Choose 5 uniform styles in order of preference</span>
-      <span class="jersey-count" id="jersey-count">0/5</span>
+    <div class="jz-picker">
+      <div class="jz-head">
+        <h3 class="jz-heading">Rank 5 uniform styles</h3>
+        <p class="jz-rule">At least 2 light and 2 dark<button type="button" class="jz-info" aria-controls="jz-reason" aria-expanded="false" aria-label="Why this rule?" onclick="const o=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!o)); document.getElementById('jz-reason').hidden = o;">i</button></p>
+        <p class="jz-reason" id="jz-reason" hidden>Every matchup needs one team in light so you're not playing dark-on-dark.</p>
+      </div>
+      <div class="jz-tray" id="jz-tray" aria-label="Your five ranked picks"></div>
+      <div class="jz-status" id="jz-status" role="status" aria-live="polite"></div>
+      <div class="jz-tabs" id="jz-tabs" role="tablist"></div>
+      <div id="jersey-grid" class="jz-gridwrap"><!-- rendered by renderJerseys() --></div>
     </div>
-    <div class="jersey-grid scroll" id="jersey-grid"><!-- rendered by renderJerseys() --></div>
   </div>
 
   <div class="flow-footer">
     <div class="flow-footer-inner">
       <button class="footer-back" onclick="show('league')">Back</button>
-      <button class="btn btn-primary disabled" id="team-continue" disabled onclick="handleTeamContinue(this)">
-        <span class="btn-label">Continue →</span>
+      <button class="btn btn-primary locked" id="team-continue" onclick="handleTeamContinue(this)">
+        <span class="btn-label">Continue · 0/5</span>
         <div class="btn-spinner"></div>
       </button>
     </div>
@@ -1764,54 +1847,197 @@ const JERSEYS = [
   { f:'BRL_SU26_Jersey_UTA__1600x1200.png', l:'UTA' },
   { f:'BRL_SU26_Jersey_WAS__1600x1200.png', l:'WAS' },
 ];
-function renderJerseys() {
-  const grid = document.getElementById('jersey-grid');
-  if (!grid) return;
-  grid.innerHTML = JERSEYS.map(j => `<div class="jersey-card" onclick="selectJersey(this)">
-      <span class="jc-radio"></span>
-      <img class="jersey-img-real" src="${(window.JERSEY_IMG && window.JERSEY_IMG[j.f]) || ('jerseys/' + j.f)}" alt="${j.l}" loading="lazy">
-      <div class="jersey-label">${j.l}</div>
-    </div>`).join('');
-  refreshJerseyUI();
+/* Shade per colourway — derived by sampling each kit's fabric luminance (the real
+   backend shade flag isn't in the prototype data; this stands in for it). */
+const SHADE = {
+  'CHI · Day':'light','CHI · Night':'light','MIA · Day':'light','MIA · Night':'dark',
+  'MIL · Day':'light','MIL · Night':'dark','MIN · Day':'light','MIN · Night':'dark',
+  'PHI · Day':'light','PHI · Night':'dark','PHX · Day':'light','PHX · Night':'dark',
+  'ATL':'dark','BKN':'light','BOS':'dark','CLE':'dark','CLT':'dark','DAL':'light',
+  'DEN':'light','DET':'light','GSW':'dark','HOU':'dark','IND':'dark','LAC':'dark',
+  'LAL':'light','MEM':'light','NOP':'dark','NYC':'light','OKC':'dark','ORL':'dark',
+  'POR':'dark','SAC':'dark','SAN':'dark','TOR':'light','UTA':'dark','WAS':'dark',
+};
+/* Demo: a few colourways already claimed in this division (2 light, 2 dark). */
+const TAKEN = new Set(['MIN · Day','DET','SAN','PHI · Night']);
+/* Enriched colourways: {f,l,s(shade),t(taken)} */
+const COLOURWAYS = JERSEYS.map(j => ({ f:j.f, l:j.l, s:SHADE[j.l] || 'dark', t:TAKEN.has(j.l) }));
+
+/* ── Rule (ported from the approved prototype) ── */
+const TOTAL_PICKS = 5, MIN_PER_SHADE = 2, MAX_PER_SHADE = 3;
+const otherShade = s => (s === 'light' ? 'dark' : 'light');
+const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+const countOf = (picks, s) => picks.filter(p => p.s === s).length;
+function canPick(picks, c) {
+  if (c.t) return { ok:false, reason:'cap', shade:c.s };
+  if (picks.length >= TOTAL_PICKS) return { ok:false, reason:'full', shade:c.s };
+  if (countOf(picks, c.s) >= MAX_PER_SHADE) return { ok:false, reason:'cap', shade:c.s };
+  return { ok:true };
+}
+function togglePick(picks, c) {
+  const at = picks.findIndex(p => p.f === c.f);
+  if (at > -1) return [...picks.slice(0, at), ...picks.slice(at + 1)];
+  return canPick(picks, c).ok ? [...picks, c] : picks;
+}
+function validate(picks) {
+  const light = countOf(picks, 'light'), dark = countOf(picks, 'dark');
+  const missing = { light: Math.max(0, MIN_PER_SHADE - light), dark: Math.max(0, MIN_PER_SHADE - dark) };
+  return { light, dark, missing, remaining: TOTAL_PICKS - picks.length,
+    cappedShade: (light >= MAX_PER_SHADE ? 'light' : dark >= MAX_PER_SHADE ? 'dark' : null),
+    valid: picks.length === TOTAL_PICKS && light >= MIN_PER_SHADE && dark >= MIN_PER_SHADE };
+}
+const isDisabled = (picks, c) => !picks.some(p => p.f === c.f) && !canPick(picks, c).ok;
+
+/* ── Copy — verbatim from spec ── */
+const COPY = {
+  statusEmpty: "Pick your first style — you'll rank 5.",
+  statusPartial: (n, l, d) => `${l} light, ${d} dark.`,
+  statusForced: (n, m) => {
+    const parts = [];
+    if (m.light > 0) parts.push(`${m.light} light`);
+    if (m.dark > 0) parts.push(`${m.dark} dark`);
+    return `Add ${parts.join(' and ')} to finish.`;
+  },
+  statusValid: (l, d) => `${l} light · ${d} dark — good to go.`,
+  lockRow: shade => `${cap1(shade)} picks are full — finish with ${otherShade(shade)}.`,
+  lockBtn: o => `Show ${o}`,
+  blockedCap: shade => `Only 3 ${shade} styles allowed — the rest must be ${otherShade(shade)}.`,
+  blockedFull: 'All 5 picks are in — tap one above to swap it out.',
+  blockedTaken: 'That style is already taken in this division.',
+  ctaLocked: n => `Continue · ${n}/5`,
+  ctaEnabled: 'Continue',
+  ctaInvalid: 'Rank 5 styles with at least 2 light and 2 dark to continue.',
+  takenDivider: 'Taken in this division',
+  takenChip: 'Taken',
+};
+
+const jzImg = f => (window.JERSEY_IMG && window.JERSEY_IMG[f]) || ('jerseys/' + f);
+const poolOf  = s => COLOURWAYS.filter(c => c.s === s && !c.t);   // selectable (taken excluded)
+const takenOf = s => COLOURWAYS.filter(c => c.s === s && c.t);
+
+/* Entry point (called at boot) */
+function renderJerseys() { renderJzGrid(); updateJzChrome(); }
+
+function setShade(shade) { activeShade = shade; renderJzGrid(); updateJzChrome(); }
+
+function onCardTap(f) {
+  const c = COLOURWAYS.find(x => x.f === f); if (!c) return;
+  const picked = jerseyPicks.some(p => p.f === f);
+  if (!picked && isDisabled(jerseyPicks, c)) { blockedTap(f, c); return; }  // hard block, never silent
+  jerseyPicks = togglePick(jerseyPicks, c);
+  flowState.jerseys = jerseyPicks.map(p => p.l);
+  flowState.jersey = jerseyPicks[0] ? jerseyPicks[0].l : null;
+  renderJzGrid(); updateJzChrome();
+}
+
+function blockedTap(f, c) {
+  const card = document.querySelector(`#jersey-grid .jz-card[data-f="${f}"]`);
+  if (card && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    card.classList.remove('nudge'); void card.offsetWidth; card.classList.add('nudge');
+    setTimeout(() => card.classList.remove('nudge'), 360);
+  }
+  setJzStatus(c.t ? COPY.blockedTaken : jerseyPicks.length >= TOTAL_PICKS ? COPY.blockedFull : COPY.blockedCap(c.s));
+}
+
+function cardHTML(c) {
+  const rank = jerseyPicks.findIndex(p => p.f === c.f);
+  const sel = rank > -1;
+  const dis = c.t || (!sel && isDisabled(jerseyPicks, c));
+  const chip = c.t
+    ? `<span class="jz-chip jz-chip-taken">${COPY.takenChip}</span>`
+    : `<span class="jz-chip jz-chip-${c.s}">${c.s.toUpperCase()}</span>`;
+  return `<button type="button" class="jz-card${sel ? ' selected' : ''}${dis ? ' disabled' : ''}${c.t ? ' taken' : ''}" data-f="${c.f}" onclick="onCardTap('${c.f}')">
+      <span class="jz-mark${sel ? ' on' : ''}">${sel ? rank + 1 : ''}</span>
+      <img class="jz-card-img" src="${jzImg(c.f)}" alt="${c.l}" loading="lazy">
+      <div class="jz-card-meta"><span class="jz-card-name">${c.l}</span>${chip}</div>
+    </button>`;
+}
+
+function renderJzGrid() {
+  const grid = document.getElementById('jersey-grid'); if (!grid) return;
+  const v = validate(jerseyPicks);
+  let html = '';
+  if (v.cappedShade === activeShade && jerseyPicks.length < TOTAL_PICKS) {
+    const o = otherShade(activeShade);
+    html += `<div class="jz-lockrow"><span>${COPY.lockRow(activeShade)}</span><button type="button" class="jz-jump" onclick="setShade('${o}')">${COPY.lockBtn(o)}</button></div>`;
+  }
+  html += `<div class="jz-grid">${poolOf(activeShade).map(cardHTML).join('')}</div>`;
+  const taken = takenOf(activeShade);
+  if (taken.length) html += `<div class="jz-taken-divider">${COPY.takenDivider}</div><div class="jz-grid">${taken.map(cardHTML).join('')}</div>`;
+  grid.innerHTML = html;
+}
+
+function updateJzChrome() {
+  const v = validate(jerseyPicks);
+  renderJzTray();
+  renderJzTabs();          // count + pips now live on the toggle (meters folded in)
+  setJzStatus(statusText(v));
+  updateTeamReady();
+}
+
+function renderJzTray() {
+  const tray = document.getElementById('jz-tray'); if (!tray) return;
+  let html = '';
+  for (let i = 0; i < TOTAL_PICKS; i++) {
+    const p = jerseyPicks[i];
+    html += p
+      ? `<button type="button" class="jz-slot filled" onclick="onCardTap('${p.f}')" aria-label="Remove ${p.l}"><span class="jz-slot-rank">${i + 1}</span><img src="${jzImg(p.f)}" alt="${p.l}"><span class="jz-slot-x">×</span></button>`
+      : `<div class="jz-slot empty"><span class="jz-slot-n">${i + 1}</span></div>`;
+  }
+  tray.innerHTML = html;
+}
+
+function renderJzMeters(v) {
+  const wrap = document.getElementById('jz-meters'); if (!wrap) return;
+  const meter = (shade, c) => {
+    let state = '';
+    if (v.valid) state = 'ok';
+    else if (c >= MAX_PER_SHADE) state = 'capped';
+    else if (jerseyPicks.length >= 3 && c < MIN_PER_SHADE) state = 'short';
+    let pips = '';
+    for (let i = 0; i < MAX_PER_SHADE; i++) pips += `<span class="jz-pip ${i < MIN_PER_SHADE ? 'req' : 'opt'}${i < c ? ' on' : ''}"></span>`;
+    return `<div class="jz-meter ${state}"><span class="jz-meter-k">${cap1(shade)}</span><span class="jz-pips">${pips}</span><span class="jz-meter-c">${c}/${MAX_PER_SHADE}</span></div>`;
+  };
+  wrap.innerHTML = meter('light', v.light) + meter('dark', v.dark);
+}
+
+function renderJzTabs() {
+  const el = document.getElementById('jz-tabs'); if (!el) return;
+  const v = validate(jerseyPicks);
+  const tab = shade => {
+    const c = countOf(jerseyPicks, shade);
+    let state = '';
+    if (v.valid) state = 'ok';
+    else if (c >= MAX_PER_SHADE) state = 'capped';
+    else if (jerseyPicks.length >= 3 && c < MIN_PER_SHADE) state = 'short';
+    let pips = '';
+    for (let i = 0; i < MAX_PER_SHADE; i++) pips += `<span class="jz-pip ${i < MIN_PER_SHADE ? 'req' : 'opt'}${i < c ? ' on' : ''}"></span>`;
+    return `<button type="button" class="jz-tab ${state}${activeShade === shade ? ' active' : ''}" role="tab" aria-selected="${activeShade === shade}" onclick="setShade('${shade}')"><span class="jz-tab-name">${cap1(shade)}</span><span class="jz-pips">${pips}</span></button>`;
+  };
+  el.innerHTML = tab('light') + tab('dark');
+}
+
+function statusText(v) {
+  const n = jerseyPicks.length;
+  if (n === 0) return COPY.statusEmpty;
+  if (v.valid) return COPY.statusValid(v.light, v.dark);
+  const totalMissing = v.missing.light + v.missing.dark;
+  if (totalMissing > 0 && v.remaining <= totalMissing) return COPY.statusForced(n, v.missing);
+  return COPY.statusPartial(n, v.light, v.dark);
+}
+
+function setJzStatus(text) {
+  const el = document.getElementById('jz-status'); if (!el) return;
+  const ok = validate(jerseyPicks).valid;
+  el.innerHTML = `<span class="jz-status-text">${text}</span><span class="jz-status-count${ok ? ' ok' : ''}">${jerseyPicks.length}/${TOTAL_PICKS}</span>`;
 }
 const TEAM_NAMES = ['Court Kings','The Buckets','Night Owls','Rim Reapers','Splash Bros','Concord Crows','Heatwave','Alley Oops','Paint Patrol','Fast Break','The Travelers','Bricklayers'];
 function generateTeamName() {
   const input = document.getElementById('team-name-input');
   input.value = TEAM_NAMES[Math.floor(Math.random() * TEAM_NAMES.length)];
 }
-let jerseyPicks = [];   // ordered list of chosen jersey labels (rank 1 = first)
-function selectJersey(card) {
-  const label = card.querySelector('.jersey-label').textContent.trim();
-  const at = jerseyPicks.indexOf(label);
-  if (at >= 0) {
-    jerseyPicks.splice(at, 1);              // deselect → remaining picks re-rank
-  } else {
-    if (jerseyPicks.length >= 5) return;    // cap at 5
-    jerseyPicks.push(label);
-  }
-  flowState.jerseys = jerseyPicks.slice();
-  flowState.jersey = jerseyPicks[0] || null;
-  refreshJerseyUI();
-}
-function refreshJerseyUI() {
-  const full = jerseyPicks.length >= 5;
-  document.querySelectorAll('#jersey-grid .jersey-card').forEach(card => {
-    const label = card.querySelector('.jersey-label').textContent.trim();
-    const rank = jerseyPicks.indexOf(label);
-    const radio = card.querySelector('.jc-radio');
-    if (rank >= 0) {
-      card.classList.add('selected'); card.classList.remove('disabled');
-      radio.classList.add('ranked'); radio.textContent = String(rank + 1);
-    } else {
-      card.classList.remove('selected');
-      radio.classList.remove('ranked'); radio.textContent = '';
-      card.classList.toggle('disabled', full);
-    }
-  });
-  const countEl = document.getElementById('jersey-count');
-  if (countEl) { countEl.textContent = jerseyPicks.length + '/5'; countEl.classList.toggle('done', full); }
-  updateTeamReady();
-}
+let jerseyPicks = [];        // ordered list of chosen COLOURWAYS (index 0 = rank 1)
+let activeShade = 'light';   // step opens on Light — puts the under-picked shade in front
 function setTeamMode(mode) {
   document.getElementById('tt-existing').classList.toggle('active', mode === 'existing');
   document.getElementById('tt-new').classList.toggle('active', mode === 'new');
@@ -1829,12 +2055,13 @@ function selectTeamCard(btn, name) {
   updateTeamReady();
 }
 function updateTeamReady() {
-  const jerseysOk = jerseyPicks.length === 5;
   const mode = flowState.teamMode || 'new';
-  const teamOk = mode === 'new' ? true : !!flowState.existingTeam;
-  const ready = jerseysOk && teamOk;
+  const ready = mode === 'new' ? validate(jerseyPicks).valid : !!flowState.existingTeam;
   const btn = document.getElementById('team-continue');
-  if (btn) { btn.disabled = !ready; btn.classList.toggle('disabled', !ready); }
+  if (!btn) return;
+  btn.classList.toggle('locked', !ready);          // stays clickable while locked (spec: invalid-press message)
+  const lbl = btn.querySelector('.btn-label');
+  if (lbl) lbl.textContent = ready ? COPY.ctaEnabled : (mode === 'new' ? COPY.ctaLocked(jerseyPicks.length) : COPY.ctaEnabled);
 }
 /* Team edge-states (dev-demo triggers) */
 function showTeamError() {
@@ -1863,9 +2090,10 @@ function setJerseyDeadline(state) {
     : '<div class="banner-icon">!</div> Jersey personalization deadline is Sun, June 14';
 }
 function handleTeamContinue(btn) {
-  if (jerseyPicks.length !== 5) return;
   const mode = flowState.teamMode || 'new';
-  if (mode === 'existing' && !flowState.existingTeam) return;
+  if (mode === 'new') {
+    if (!validate(jerseyPicks).valid) { setJzStatus(COPY.ctaInvalid); return; }  // locked press → explain, no nav
+  } else if (!flowState.existingTeam) { return; }
   btn.classList.add('loading');
   setTimeout(() => {
     btn.classList.remove('loading');
