@@ -646,12 +646,17 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 .jz-info:hover { border-color: var(--text-secondary); color: var(--text-primary); }
 .jz-reason { font-size: 13px; color: var(--text-secondary); margin: 8px 0 0; padding: 10px 12px; background: var(--surface-sunken); border-radius: var(--radius-field); line-height: 1.45; }
 
-.jz-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface-sunken); border-radius: 12px; padding: 6px; margin: 2px 0 16px; }
+.jz-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: var(--surface-sunken); border-radius: 12px; padding: 6px; margin: 2px 0 16px; }
 .jz-tab { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 11px 14px; border: 1px solid transparent; border-radius: 9px; background: transparent; font-family: var(--font); font-size: 15px; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
 .jz-tab.active { background: var(--surface-default); border-color: var(--text-primary); box-shadow: var(--tab-shadow); color: var(--text-primary); }
 .jz-tab-n { color: var(--text-tertiary); font-weight: 400; }
+.jz-tab-check { width: 14px; height: 14px; color: var(--ok-text); flex-shrink: 0; }
+@media (max-width: 440px) { .jz-tab { font-size: 14px; padding: 10px 6px; } .jz-tab-n { display: none; } }
 
 .jz-gridwrap { display: flex; flex-direction: column; gap: 6px; }
+@keyframes jz-fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.jz-gridwrap.swap { animation: jz-fadein .28s ease; }
+@media (prefers-reduced-motion: reduce) { .jz-gridwrap.swap { animation: none; } }
 .jz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 @media (max-width: 560px) { .jz-grid { grid-template-columns: repeat(2, 1fr); } }
 .jz-card { position: relative; border: 1.5px solid var(--border-default); border-radius: 10px; padding: 8px; background: var(--surface-default); cursor: pointer; text-align: center; font-family: var(--font); transition: border-color .15s, box-shadow .15s; box-shadow: 0 2px 5px rgba(0,0,0,.06); display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -684,7 +689,7 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 .jz-widget { position: fixed; left: 50%; bottom: 90px; z-index: 45; width: min(384px, calc(100vw - 24px)); background: var(--surface-default); border-radius: 12px; box-shadow: 0 8px 12px rgba(0,0,0,.10), 0 4px 6px rgba(0,0,0,.08), 0 2px 2px rgba(0,0,0,.06); padding: 14px 16px; display: flex; flex-direction: column; gap: 11px; transform: translateX(-50%) translateY(150%); opacity: 0; pointer-events: none; transition: transform .46s cubic-bezier(.34,1.56,.64,1), opacity .3s ease; }
 .jz-widget.show { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
 @media (prefers-reduced-motion: reduce) { .jz-widget, .jz-widget.show { transition: opacity .2s ease; transform: translateX(-50%); } }
-.jz-wg-head { display: flex; align-items: center; gap: 14px; }
+.jz-wg-head { display: flex; align-items: center; gap: 12px; }
 .jz-wg-count { flex: 1; font-size: 14px; font-weight: 600; color: var(--text-primary); }
 .jz-wg-meter { display: flex; align-items: center; gap: 8px; }
 .jz-wg-lbl { font-size: 12px; color: var(--text-primary); }
@@ -694,16 +699,21 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
 @keyframes jz-punch { 0%{transform:scale(.3)} 55%{transform:scale(1.3)} 100%{transform:scale(1)} }
 .jz-dot.punch { animation: jz-punch .38s cubic-bezier(.34,1.56,.64,1); }
 @media (prefers-reduced-motion: reduce) { .jz-dot.punch { animation: none; } }
-.jz-wg-warn { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; background: #ffe0cc; color: #7d4b00; font-size: 13px; font-weight: 500; line-height: 1.3; }
-.jz-wg-warn[hidden] { display: none; }   /* the hidden attr must beat display:flex */
-.jz-wg-warn-ic { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; background: #d9791f; color: #fff; font-family: var(--font); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.jz-wg-msg { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; line-height: 1.3; }
+.jz-wg-msg[hidden] { display: none; }   /* the hidden attr must beat display:flex */
+.jz-wg-msg.guide { background: var(--page-bg); color: var(--text-secondary); }
+.jz-wg-msg.ok { background: rgba(26,122,63,.08); color: var(--ok-text); }
+.jz-wg-msg.warn { background: #ffe0cc; color: #7d4b00; }
+.jz-wg-msg-t { flex: 1; min-width: 0; }
+.jz-wg-msg-ic { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; background: #d9791f; color: #fff; font-family: var(--font); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.jz-wg-msg-ok { flex-shrink: 0; width: 16px; height: 16px; }
 .jz-wg-slots { display: flex; gap: 8px; }
 .jz-wg-slot { position: relative; flex: 1; height: 66px; border-radius: 5px; display: flex; align-items: center; justify-content: center; padding: 0; }
 .jz-wg-slot.filled { background: var(--surface-sunken); cursor: pointer; border: none; }
 .jz-wg-slot.filled img { max-width: 92%; max-height: 80%; object-fit: contain; }
 .jz-wg-rank { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; border-radius: 50%; background: #000; color: #fff; font-family: var(--font); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid var(--surface-default); }
 .jz-wg-slot.empty { background: var(--page-bg); border: 2px dashed var(--border-strong); }
-.jz-wg-num { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
+.jz-wg-sw { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text-tertiary); }
 #screen-team-new.jz-has-widget { padding-bottom: 220px; }
 
 /* ─────────────────────────────────────────────
@@ -1300,8 +1310,8 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
     <div class="jz-picker">
       <div class="jz-head">
         <h3 class="jz-heading">Rank 5 uniform styles</h3>
-        <p class="jz-rule">At least 2 light and 2 dark<button type="button" class="jz-info" aria-controls="jz-reason" aria-expanded="false" aria-label="Why this rule?" onclick="const o=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!o)); document.getElementById('jz-reason').hidden = o;">i</button></p>
-        <p class="jz-reason" id="jz-reason" hidden>Every matchup needs one team in light so you're not playing dark-on-dark.</p>
+        <p class="jz-rule">1 light, 1 dark and 3 colour kits. Choose in order of preference.<button type="button" class="jz-info" aria-controls="jz-reason" aria-expanded="false" aria-label="Why this rule?" onclick="const o=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!o)); document.getElementById('jz-reason').hidden = o;">i</button></p>
+        <p class="jz-reason" id="jz-reason" hidden>Every matchup needs a light team and a dark team, so your 5 must include 1 light and 1 dark kit. Rank all 5 in order of preference — we'll do our best to give you your #1.</p>
       </div>
       <div class="jz-tabs" id="jz-tabs" role="tablist"></div>
       <div id="jersey-grid" class="jz-gridwrap"><!-- rendered by renderJerseys() --></div>
@@ -1324,8 +1334,9 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
       <span class="jz-wg-count" id="jz-wg-count">0/5 Selected</span>
       <div class="jz-wg-meter"><span class="jz-wg-lbl">Light</span><div class="jz-wg-dots" id="jz-wg-dots-light"></div></div>
       <div class="jz-wg-meter"><span class="jz-wg-lbl">Dark</span><div class="jz-wg-dots" id="jz-wg-dots-dark"></div></div>
+      <div class="jz-wg-meter"><span class="jz-wg-lbl">Colour</span><div class="jz-wg-dots" id="jz-wg-dots-colour"></div></div>
     </div>
-    <div class="jz-wg-warn" id="jz-wg-warn" role="status" hidden></div>
+    <div class="jz-wg-msg" id="jz-wg-msg" role="status" aria-live="polite" hidden></div>
     <div class="jz-wg-slots" id="jz-wg-slots"></div>
   </div>
 </div>
@@ -1811,83 +1822,110 @@ function applySkillTest() {
 // Labelled by city code to match the design's mono tags (e.g. "CHI × SANDS");
 // the "× sponsor" colourway names can be added once you share that mapping.
 /* FA26 colourways — 36 kits, each with a front + back render (Drive: BRL_FA26 "Transparent").
-   Shade: explicit for the Dark/Lite variants, sampled by fabric luminance for the rest.
+   Category (s): 'light' = white / cream · 'dark' = black / charcoal / navy · 'colour' = a saturated hue.
+   Prototype tags come from a review of the art (brightness + saturation) — production should use an
+   ops-maintained tag. The file names' Dark/Lite don't map 1:1 (e.g. CLE Lite is blue → colour).
    Images embedded as WebP data URIs in window.JERSEY_IMG, keyed `${k}_front` / `${k}_back`. */
 const COLOURWAYS = [
-  { k:"ATL", l:"ATL", s:"dark" },
+  { k:"ATL", l:"ATL", s:"colour" },
   { k:"BKN_Dark", l:"BKN Dark", s:"dark" },
   { k:"BKN_Lite", l:"BKN Lite", s:"light" },
-  { k:"BOS", l:"BOS", s:"dark" },
+  { k:"BOS", l:"BOS", s:"colour" },
   { k:"CHI_Dark", l:"CHI Dark", s:"dark" },
   { k:"CHI_Lite", l:"CHI Lite", s:"light" },
-  { k:"CLE_Dark", l:"CLE Dark", s:"dark" },
-  { k:"CLE_Lite", l:"CLE Lite", s:"light" },
-  { k:"CLT", l:"CLT", s:"light" },
-  { k:"DAL", l:"DAL", s:"dark" },
-  { k:"DEN_Dark", l:"DEN Dark", s:"dark" },
+  { k:"CLE_Dark", l:"CLE Dark", s:"colour" },
+  { k:"CLE_Lite", l:"CLE Lite", s:"colour" },
+  { k:"CLT", l:"CLT", s:"colour" },
+  { k:"DAL", l:"DAL", s:"colour" },
+  { k:"DEN_Dark", l:"DEN Dark", s:"colour" },
   { k:"DEN_Lite", l:"DEN Lite", s:"light" },
-  { k:"DET", l:"DET", s:"dark" },
+  { k:"DET", l:"DET", s:"colour" },
   { k:"GSW", l:"GSW", s:"dark" },
-  { k:"HOU_Dark", l:"HOU Dark", s:"dark" },
+  { k:"HOU_Dark", l:"HOU Dark", s:"colour" },
   { k:"HOU_Lite", l:"HOU Lite", s:"light" },
   { k:"IND_Dark", l:"IND Dark", s:"dark" },
   { k:"IND_Lite", l:"IND Lite", s:"light" },
   { k:"LAC", l:"LAC", s:"dark" },
-  { k:"LAL", l:"LAL", s:"dark" },
-  { k:"MEM", l:"MEM", s:"light" },
+  { k:"LAL", l:"LAL", s:"colour" },
+  { k:"MEM", l:"MEM", s:"colour" },
   { k:"MIA", l:"MIA", s:"dark" },
-  { k:"MIL", l:"MIL", s:"dark" },
+  { k:"MIL", l:"MIL", s:"colour" },
   { k:"MIN", l:"MIN", s:"dark" },
   { k:"NOP", l:"NOP", s:"dark" },
   { k:"NYC", l:"NYC", s:"light" },
-  { k:"OKC", l:"OKC", s:"dark" },
+  { k:"OKC", l:"OKC", s:"colour" },
   { k:"ORL", l:"ORL", s:"dark" },
   { k:"PHI", l:"PHI", s:"light" },
-  { k:"PHX", l:"PHX", s:"dark" },
+  { k:"PHX", l:"PHX", s:"colour" },
   { k:"POR", l:"POR", s:"dark" },
-  { k:"SAC", l:"SAC", s:"dark" },
-  { k:"SAN", l:"SAN", s:"light", t:true },
-  { k:"TOR", l:"TOR", s:"dark" },
+  { k:"SAC", l:"SAC", s:"colour" },
+  { k:"SAN", l:"SAN", s:"colour", t:true },
+  { k:"TOR", l:"TOR", s:"colour" },
   { k:"UTA", l:"UTA", s:"dark" },
   { k:"WAS", l:"WAS", s:"dark", t:true }
 ];
 /* which side each colourway is showing in the grid (flip toggle); default = front */
 const flipped = {};
 
-/* ── Rule (ported from the approved prototype) ── */
-const TOTAL_PICKS = 5, MIN_PER_SHADE = 2, MAX_PER_SHADE = 3;
-const otherShade = s => (s === 'light' ? 'dark' : 'light');
-const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
-const countOf = (picks, s) => picks.filter(p => p.s === s).length;
-function canPick(picks, c) {
-  if (c.t) return { ok:false, reason:'cap', shade:c.s };
-  if (picks.length >= TOTAL_PICKS) return { ok:false, reason:'full', shade:c.s };
-  if (countOf(picks, c.s) >= MAX_PER_SHADE) return { ok:false, reason:'cap', shade:c.s };
-  return { ok:true };
-}
-function togglePick(picks, c) {
-  const at = picks.findIndex(p => p.k === c.k);
-  if (at > -1) return [...picks.slice(0, at), ...picks.slice(at + 1)];
-  return canPick(picks, c).ok ? [...picks, c] : picks;
-}
-function validate(picks) {
-  const light = countOf(picks, 'light'), dark = countOf(picks, 'dark');
-  const missing = { light: Math.max(0, MIN_PER_SHADE - light), dark: Math.max(0, MIN_PER_SHADE - dark) };
-  return { light, dark, missing, remaining: TOTAL_PICKS - picks.length,
-    cappedShade: (light >= MAX_PER_SHADE ? 'light' : dark >= MAX_PER_SHADE ? 'dark' : null),
-    valid: picks.length === TOTAL_PICKS && light >= MIN_PER_SHADE && dark >= MIN_PER_SHADE };
-}
-const isDisabled = (picks, c) => !picks.some(p => p.k === c.k) && !canPick(picks, c).ok;
+/* ── Rule (ops, Sep 2026): rank 5 kits 1–5 — the 5 must include exactly 1 light + 1 dark (so 3 colour) ──
+   Ranking is overall: a team's #1 can be any category, so the allocator can honour #1 wherever possible.
+   Caps per category (1 / 1 / 3) sum to 5, so any 5 picks is automatically a valid mix. */
+const CATS = ['light', 'dark', 'colour'];
+const QUOTA = { light: 1, dark: 1, colour: 3 };
+const TOTAL_PICKS = 5;
+const CAT_LABEL = { light: 'Light', dark: 'Dark', colour: 'Colour' };
 
-/* ── Copy — verbatim from spec ── */
+let picks = [];            // ranked: index 0 = the team's #1
+let activeCat = 'light';   // opens on the first tab
+let justFilled = null;     // category whose limit the last tap reached (drives the guidance line)
+
+const countIn   = cat => picks.filter(p => p.s === cat).length;
+const catFull   = cat => countIn(cat) >= QUOTA[cat];
+const pickCount = () => picks.length;
+const isPicked  = c => picks.some(p => p.k === c.k);
+const rankOf    = c => picks.findIndex(p => p.k === c.k) + 1;      // 0 = not picked
+const kitValid  = () => picks.length === TOTAL_PICKS && CATS.every(cat => countIn(cat) === QUOTA[cat]);
+
+/* What a tap on this card does */
+function tapResult(c) {
+  if (isPicked(c)) return 'remove';
+  if (c.t) return 'taken';
+  if (picks.length >= TOTAL_PICKS) return 'full';
+  if (catFull(c.s)) return 'catFull';
+  return 'add';
+}
+const isDisabled = c => !isPicked(c) && tapResult(c) !== 'add';
+
+/* What's still needed: "1 light, 1 dark and 2 colour kits" · style 'a' → "a light, a dark and 2 colour kits".
+   The shared noun follows the last number ("1 light and 1 dark kit"). */
+const missingParts = () => CATS.map(cat => ({ cat, n: QUOTA[cat] - countIn(cat) })).filter(m => m.n > 0);
+function missingText(style = 'count') {
+  const parts = missingParts(); if (!parts.length) return '';
+  const words = parts.map(({ cat, n }) => `${n === 1 && style === 'a' ? 'a' : n} ${cat}`);
+  const list = words.length > 1 ? words.slice(0, -1).join(', ') + ' and ' + words[words.length - 1] : words[0];
+  return `${list} kit${parts[parts.length - 1].n > 1 ? 's' : ''}`;
+}
+function catFullText(cat) {
+  if (cat !== 'colour') {
+    const held = picks.find(p => p.s === cat);
+    return `One ${cat} kit per squad. Sub out ${held.l} (#${rankOf(held)}) to bring in another.`;
+  }
+  const need = missingParts().filter(m => m.cat !== 'colour');
+  if (need.length === 2) return "Colour's maxed. Your last 2 spots go to a light and a dark kit.";
+  if (need.length === 1) return `Colour's maxed. Your last spot goes to a ${need[0].cat} kit.`;
+  return "Colour's maxed.";
+}
+
+/* ── Copy (direction B, "Court": your picks are your starting five) ── */
 const COPY = {
-  warnCap: shade => `${cap1(shade)} picks full. Finish selection with ${otherShade(shade)}.`,
-  blockedCap: shade => `Only 3 ${shade} styles allowed — the rest must be ${otherShade(shade)}.`,
-  blockedFull: 'All 5 picks are in — tap one above to swap it out.',
-  blockedTaken: 'That style is already taken in this division.',
+  filled: { light: 'Light kit locked in.', dark: 'Dark kit locked in.', colour: "Colour rotation's set." },
+  still: () => `${missingText()} to go.`,
+  done: 'Starting five, locked in.',
+  full: 'Your five is full. Sub one out to make a change.',
+  taken: 'Spoken for — another squad in your division has this kit.',
   ctaLocked: n => `Continue · ${n}/5`,
   ctaEnabled: 'Continue',
-  ctaInvalid: 'Rank 5 styles with at least 2 light and 2 dark to continue.',
+  ctaInvalid: () => `Finish your five — add ${missingText('a')}.`,
   takenDivider: 'Taken in this division',
   takenChip: 'Taken',
 };
@@ -1895,43 +1933,57 @@ const COPY = {
 const jzImg   = key => (window.JERSEY_IMG && window.JERSEY_IMG[key]) || '';
 const jzFront = k => jzImg(k + '_front');
 const jzBack  = k => jzImg(k + '_back');
-const jzSide  = k => jzImg(k + '_' + (flipped[k] || 'front'));   // grid image respects the flip state
-const poolOf  = s => COLOURWAYS.filter(c => c.s === s && !c.t);   // selectable (taken excluded)
-const takenOf = s => COLOURWAYS.filter(c => c.s === s && c.t);
+const jzSide  = k => jzImg(k + '_' + (flipped[k] || 'front'));      // grid image respects the flip state
+const inTab   = (c, cat) => c.s === cat;
+const poolOf  = cat => COLOURWAYS.filter(c => inTab(c, cat) && !c.t);   // selectable (taken excluded)
+const takenOf = cat => COLOURWAYS.filter(c => inTab(c, cat) && c.t);
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* Entry point (called at boot) */
 function renderJerseys() { renderJzGrid(); updateJzChrome(); }
 
-function setShade(shade) { activeShade = shade; renderJzGrid(); renderJzTabs(); }
+function setCat(cat) {
+  if (cat === activeCat) return;
+  activeCat = cat;
+  renderJzGrid(); renderJzTabs();
+  const wrap = document.getElementById('jersey-grid');
+  if (wrap && !reduceMotion()) { wrap.classList.remove('swap'); void wrap.offsetWidth; wrap.classList.add('swap'); }
+}
 
 function onCardTap(k) {
   const c = COLOURWAYS.find(x => x.k === k); if (!c) return;
-  const picked = jerseyPicks.some(p => p.k === k);
-  if (!picked && isDisabled(jerseyPicks, c)) { blockedTap(k, c); return; }  // hard block, never silent
-  jerseyPicks = togglePick(jerseyPicks, c);
-  flowState.jerseys = jerseyPicks.map(p => p.l);
-  flowState.jersey = jerseyPicks[0] ? jerseyPicks[0].l : null;
+  const r = tapResult(c);
+  if (r !== 'add' && r !== 'remove') { blockedTap(k, c, r); return; }   // hard block, never silent
+  if (r === 'remove') picks = picks.filter(p => p.k !== k);             // the rest renumber, order kept
+  else { picks = [...picks, c]; if (catFull(c.s)) justFilled = c.s; }
+  syncFlowState();
   renderJzGrid(); updateJzChrome();
 }
 
-function blockedTap(k, c) {
+function syncFlowState() {
+  const first = cat => (picks.find(p => p.s === cat) || {}).l || null;
+  flowState.jerseys = picks.map(p => p.l);                             // ranked 1–5
+  flowState.jersey = flowState.jerseys[0] || null;
+  flowState.kit = { light: first('light'), dark: first('dark'), colours: picks.filter(p => p.s === 'colour').map(p => p.l) };
+}
+
+function blockedTap(k, c, r) {
   const card = document.querySelector(`#jersey-grid .jz-card[data-k="${k}"]`);
-  if (card && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (card && !reduceMotion()) {
     card.classList.remove('nudge'); void card.offsetWidth; card.classList.add('nudge');
     setTimeout(() => card.classList.remove('nudge'), 360);
   }
-  flashWarn(c.t ? COPY.blockedTaken : jerseyPicks.length >= TOTAL_PICKS ? COPY.blockedFull : COPY.blockedCap(c.s));
+  flashWarn(r === 'taken' ? COPY.taken : r === 'full' ? COPY.full : catFullText(c.s));
 }
 
 function cardHTML(c) {
-  const rank = jerseyPicks.findIndex(p => p.k === c.k);
-  const sel = rank > -1;
-  const dis = c.t || (!sel && isDisabled(jerseyPicks, c));
+  const rank = rankOf(c), sel = rank > 0, dis = isDisabled(c);
+  const tag = c.t ? `<span class="jz-card-taken">${COPY.takenChip}</span>` : '';
   return `<button type="button" class="jz-card${sel ? ' selected' : ''}${dis ? ' disabled' : ''}${c.t ? ' taken' : ''}" data-k="${c.k}" onclick="onCardTap('${c.k}')">
-      <span class="jz-radio${sel ? ' on' : ''}">${sel ? rank + 1 : ''}</span>
+      <span class="jz-radio${sel ? ' on' : ''}">${sel ? rank : ''}</span>
       <span class="jz-flip" role="button" tabindex="-1" aria-label="Flip ${c.l} front / back" onclick="event.stopPropagation(); flipCard('${c.k}', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></span>
       <img class="jz-card-img" src="${jzSide(c.k)}" alt="${c.l}" loading="lazy">
-      <div class="jz-card-meta"><span class="jz-card-name">${c.l}</span>${c.t ? `<span class="jz-card-taken">${COPY.takenChip}</span>` : ''}</div>
+      <div class="jz-card-meta"><span class="jz-card-name">${c.l}</span>${tag}</div>
     </button>`;
 }
 
@@ -1940,7 +1992,7 @@ function flipCard(k, el) {
   flipped[k] = (flipped[k] === 'back') ? 'front' : 'back';
   const img = el.parentElement.querySelector('.jz-card-img');
   if (!img) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { img.src = jzSide(k); return; }
+  if (reduceMotion()) { img.src = jzSide(k); return; }
   img.classList.remove('flip'); void img.offsetWidth; img.classList.add('flip');
   setTimeout(() => { img.src = jzSide(k); }, 170);        // swap at the mid-point of the flip
   setTimeout(() => img.classList.remove('flip'), 360);
@@ -1948,8 +2000,8 @@ function flipCard(k, el) {
 
 function renderJzGrid() {
   const grid = document.getElementById('jersey-grid'); if (!grid) return;
-  let html = `<div class="jz-grid">${poolOf(activeShade).map(cardHTML).join('')}</div>`;
-  const taken = takenOf(activeShade);
+  let html = `<div class="jz-grid">${poolOf(activeCat).map(cardHTML).join('')}</div>`;
+  const taken = takenOf(activeCat);
   if (taken.length) html += `<div class="jz-taken-divider">${COPY.takenDivider}</div><div class="jz-grid">${taken.map(cardHTML).join('')}</div>`;
   grid.innerHTML = html;
 }
@@ -1960,43 +2012,58 @@ function updateJzChrome() {
   updateTeamReady();
 }
 
-/* Toggle — plain shade + pool count (Figma "Light (n) / Dark (n)") */
+/* Tabs — Light · Dark · Colour: pool counts, and a check once a category's limit is reached */
 function renderJzTabs() {
   const el = document.getElementById('jz-tabs'); if (!el) return;
-  const tab = shade =>
-    `<button type="button" class="jz-tab${activeShade === shade ? ' active' : ''}" role="tab" aria-selected="${activeShade === shade}" onclick="setShade('${shade}')">${cap1(shade)} <span class="jz-tab-n">(${poolOf(shade).length})</span></button>`;
-  el.innerHTML = tab('light') + tab('dark');
+  const check = '<svg class="jz-tab-check" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  el.innerHTML = CATS.map(cat => {
+    const done = catFull(cat);
+    return `<button type="button" class="jz-tab${activeCat === cat ? ' active' : ''}${done ? ' done' : ''}" role="tab" aria-selected="${activeCat === cat}" onclick="setCat('${cat}')">${CAT_LABEL[cat]} <span class="jz-tab-n">(${poolOf(cat).length})</span>${done ? check : ''}</button>`;
+  }).join('');
 }
 
 /* ── Floating selections widget (Figma 3275:35889) ── */
-let prevWg = { light: 0, dark: 0 };   // remembers dot counts so only a newly-filled dot "punches" in
+let prevWg = { light: 0, dark: 0, colour: 0 };   // remembers dot counts so only a newly-filled dot "punches" in
 
 function widgetVisible() {
-  return (flowState.teamMode || 'new') === 'new' && jerseyPicks.length > 0;
+  return (flowState.teamMode || 'new') === 'new' && picks.length > 0;
 }
 
 function renderWidget() {
   const wg = document.getElementById('jz-widget'); if (!wg) return;
-  const v = validate(jerseyPicks);
-  const n = jerseyPicks.length;
-  document.getElementById('jz-wg-count').textContent = `${n}/${TOTAL_PICKS} Selected`;
-  renderWgDots('light', v.light);
-  renderWgDots('dark', v.dark);
-  prevWg = { light: v.light, dark: v.dark };
+  document.getElementById('jz-wg-count').textContent = `${picks.length}/${TOTAL_PICKS} Selected`;
+  CATS.forEach(cat => renderWgDots(cat, countIn(cat)));
+  prevWg = { light: countIn('light'), dark: countIn('dark'), colour: countIn('colour') };
   renderWgSlots();
-  if (v.cappedShade && n < TOTAL_PICKS) setWidgetWarn(COPY.warnCap(v.cappedShade));   // e.g. "Dark picks full…"
-  else hideWidgetWarn();
+  renderGuide();
   const show = widgetVisible();
   wg.classList.toggle('show', show);
   const scr = document.getElementById('screen-team-new');
   if (scr) scr.classList.toggle('jz-has-widget', show);
 }
 
-function renderWgDots(shade, count) {
-  const el = document.getElementById('jz-wg-dots-' + shade); if (!el) return;
-  const prev = prevWg[shade];
+/* One message line, always populated while the widget is up: guidance → success, and warnings on a blocked tap */
+function renderGuide() {
+  if (kitValid()) { justFilled = null; setMsg('ok', COPY.done); return; }
+  const prefix = justFilled ? COPY.filled[justFilled] + ' ' : '';
+  justFilled = null;
+  setMsg('guide', prefix + COPY.still());
+}
+
+function setMsg(type, text) {
+  const el = document.getElementById('jz-wg-msg'); if (!el) return;
+  const ic = type === 'warn' ? '<span class="jz-wg-msg-ic" aria-hidden="true">!</span>'
+    : type === 'ok' ? '<svg class="jz-wg-msg-ok" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '';
+  el.className = 'jz-wg-msg ' + type;
+  el.innerHTML = `${ic}<span class="jz-wg-msg-t">${text}</span>`;
+  el.hidden = false;
+}
+
+function renderWgDots(cat, count) {
+  const el = document.getElementById('jz-wg-dots-' + cat); if (!el) return;
+  const prev = prevWg[cat];
   let html = '';
-  for (let i = 0; i < MAX_PER_SHADE; i++) {
+  for (let i = 0; i < QUOTA[cat]; i++) {
     const on = i < count;
     const punch = on && count > prev && i === count - 1;   // the dot that just filled → animate
     html += `<span class="jz-dot${on ? ' on' : ''}${punch ? ' punch' : ''}"></span>`;
@@ -2004,28 +2071,22 @@ function renderWgDots(shade, count) {
   el.innerHTML = html;
 }
 
+/* Ranked lineup 1–5 — filled slots remove on tap (the rest renumber) */
 function renderWgSlots() {
   const el = document.getElementById('jz-wg-slots'); if (!el) return;
   let html = '';
   for (let i = 0; i < TOTAL_PICKS; i++) {
-    const p = jerseyPicks[i];
+    const p = picks[i];
     html += p
-      ? `<button type="button" class="jz-wg-slot filled" onclick="onCardTap('${p.k}')" aria-label="Remove ${p.l}"><img src="${jzFront(p.k)}" alt="${p.l}"><span class="jz-wg-rank">${i + 1}</span></button>`
-      : `<div class="jz-wg-slot empty"><span class="jz-wg-num">${i + 1}</span></div>`;
+      ? `<button type="button" class="jz-wg-slot filled" onclick="onCardTap('${p.k}')" aria-label="Remove ${p.l} (#${i + 1})"><img src="${jzFront(p.k)}" alt="${p.l}"><span class="jz-wg-rank">${i + 1}</span></button>`
+      : `<div class="jz-wg-slot empty"><span class="jz-wg-sw">${i + 1}</span></div>`;
   }
   el.innerHTML = html;
 }
 
-function setWidgetWarn(msg) {
-  const el = document.getElementById('jz-wg-warn'); if (!el) return;
-  el.innerHTML = `<span class="jz-wg-warn-ic" aria-hidden="true">!</span><span>${msg}</span>`;
-  el.hidden = false;
-}
-function hideWidgetWarn() { const el = document.getElementById('jz-wg-warn'); if (el) el.hidden = true; }
-
-/* Warnings live inline in the widget; fall back to a toast if the widget isn't up yet (0 picks) */
+/* Warnings share the widget's message line; fall back to a toast if the widget isn't up yet (0 picks) */
 function flashWarn(msg) {
-  if (widgetVisible()) setWidgetWarn(msg);
+  if (widgetVisible()) setMsg('warn', msg);
   else if (typeof showToast === 'function') showToast(msg);
 }
 const TEAM_NAMES = ['Court Kings','The Buckets','Night Owls','Rim Reapers','Splash Bros','Concord Crows','Heatwave','Alley Oops','Paint Patrol','Fast Break','The Travelers','Bricklayers'];
@@ -2033,8 +2094,6 @@ function generateTeamName() {
   const input = document.getElementById('team-name-input');
   input.value = TEAM_NAMES[Math.floor(Math.random() * TEAM_NAMES.length)];
 }
-let jerseyPicks = [];        // ordered list of chosen COLOURWAYS (index 0 = rank 1)
-let activeShade = 'light';   // step opens on Light — puts the under-picked shade in front
 function setTeamMode(mode) {
   document.getElementById('tt-existing').classList.toggle('active', mode === 'existing');
   document.getElementById('tt-new').classList.toggle('active', mode === 'new');
@@ -2043,7 +2102,7 @@ function setTeamMode(mode) {
   flowState.teamMode = mode;
   if (mode === 'existing') renderExistingTab();
   const e = document.getElementById('team-name-error'); if (e) e.style.display = 'none';
-  updateTeamReady();
+  updateJzChrome();   // also hides the kit widget in Existing Team mode
 }
 function selectTeamCard(btn, name) {
   Array.from(btn.parentElement.children).forEach(c => c.classList.remove('selected'));
@@ -2053,12 +2112,12 @@ function selectTeamCard(btn, name) {
 }
 function updateTeamReady() {
   const mode = flowState.teamMode || 'new';
-  const ready = mode === 'new' ? validate(jerseyPicks).valid : !!flowState.existingTeam;
+  const ready = mode === 'new' ? kitValid() : !!flowState.existingTeam;
   const btn = document.getElementById('team-continue');
   if (!btn) return;
   btn.classList.toggle('locked', !ready);          // stays clickable while locked (spec: invalid-press message)
   const lbl = btn.querySelector('.btn-label');
-  if (lbl) lbl.textContent = ready ? COPY.ctaEnabled : (mode === 'new' ? COPY.ctaLocked(jerseyPicks.length) : COPY.ctaEnabled);
+  if (lbl) lbl.textContent = ready ? COPY.ctaEnabled : (mode === 'new' ? COPY.ctaLocked(pickCount()) : COPY.ctaEnabled);
 }
 /* Team edge-states (dev-demo triggers) */
 function showTeamError() {
@@ -2089,7 +2148,7 @@ function setJerseyDeadline(state) {
 function handleTeamContinue(btn) {
   const mode = flowState.teamMode || 'new';
   if (mode === 'new') {
-    if (!validate(jerseyPicks).valid) { flashWarn(COPY.ctaInvalid); return; }  // locked press → explain, no nav
+    if (!kitValid()) { flashWarn(COPY.ctaInvalid()); return; }  // locked press → explain, no nav
   } else if (!flowState.existingTeam) { return; }
   btn.classList.add('loading');
   setTimeout(() => {
