@@ -946,8 +946,8 @@ input[type=range].slider::-moz-range-thumb { width: 22px; height: 22px; border-r
     <div class="jz-picker">
       <div class="jz-head">
         <h3 class="jz-heading">Rank 5 uniform styles</h3>
-        <p class="jz-rule">1 light, 1 dark and 3 colour kits. Choose in order of preference.<button type="button" class="jz-info" aria-controls="jz-reason" aria-expanded="false" aria-label="Why this rule?" onclick="const o=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!o)); document.getElementById('jz-reason').hidden = o;">i</button></p>
-        <p class="jz-reason" id="jz-reason" hidden>Every matchup needs a light team and a dark team, so your 5 must include 1 light and 1 dark kit. Rank all 5 in order of preference — we'll do our best to give you your #1.</p>
+        <p class="jz-rule">1 light, 1 dark and 3 colours. Choose in order of preference.<button type="button" class="jz-info" aria-controls="jz-reason" aria-expanded="false" aria-label="Why this rule?" onclick="const o=this.getAttribute('aria-expanded')==='true'; this.setAttribute('aria-expanded', String(!o)); document.getElementById('jz-reason').hidden = o;">i</button></p>
+        <p class="jz-reason" id="jz-reason" hidden>Every matchup needs a light team and a dark team, so your 5 must include 1 light and 1 dark. Rank all 5 in order of preference — we'll do our best to give you your #1.</p>
       </div>
       <div class="jz-tabs" id="jz-tabs" role="tablist"></div>
       <div id="jersey-grid" class="jz-gridwrap"><!-- rendered by renderJerseys() --></div>
@@ -1069,36 +1069,33 @@ function tapResult(c) {
 }
 const isDisabled = c => !isPicked(c) && tapResult(c) !== 'add';
 
-/* What's still needed: "1 light, 1 dark and 2 colour kits" · style 'a' → "a light, a dark and 2 colour kits".
-   The shared noun follows the last number ("1 light and 1 dark kit"). */
+/* What's still needed, e.g. "1 light, 1 dark and 2 colours" (light / dark / colour are the nouns — no "kit") */
 const missingParts = () => CATS.map(cat => ({ cat, n: QUOTA[cat] - countIn(cat) })).filter(m => m.n > 0);
-function missingText(style = 'count') {
-  const parts = missingParts(); if (!parts.length) return '';
-  const words = parts.map(({ cat, n }) => `${n === 1 && style === 'a' ? 'a' : n} ${cat}`);
-  const list = words.length > 1 ? words.slice(0, -1).join(', ') + ' and ' + words[words.length - 1] : words[0];
-  return `${list} kit${parts[parts.length - 1].n > 1 ? 's' : ''}`;
+function missingText() {
+  const words = missingParts().map(({ cat, n }) => `${n} ${cat}${cat === 'colour' && n > 1 ? 's' : ''}`);
+  return words.length > 1 ? words.slice(0, -1).join(', ') + ' and ' + words[words.length - 1] : (words[0] || '');
 }
 function catFullText(cat) {
   if (cat !== 'colour') {
     const held = picks.find(p => p.s === cat);
-    return `One ${cat} kit per squad. Sub out ${held.l} (#${rankOf(held)}) to bring in another.`;
+    return `One ${cat} per squad. Sub out ${held.l} (#${rankOf(held)}) to bring in another.`;
   }
   const need = missingParts().filter(m => m.cat !== 'colour');
-  if (need.length === 2) return "Colour's maxed. Your last 2 spots go to a light and a dark kit.";
-  if (need.length === 1) return `Colour's maxed. Your last spot goes to a ${need[0].cat} kit.`;
+  if (need.length === 2) return "Colour's maxed. Your last 2 spots go to light and dark.";
+  if (need.length === 1) return `Colour's maxed. Your last spot goes to ${need[0].cat}.`;
   return "Colour's maxed.";
 }
 
 /* ── Copy (direction B, "Court": your picks are your starting five) ── */
 const COPY = {
-  filled: { light: 'Light kit locked in.', dark: 'Dark kit locked in.', colour: "Colour rotation's set." },
+  filled: { light: 'Light locked in.', dark: 'Dark locked in.', colour: "Colour rotation's set." },
   still: () => `${missingText()} to go.`,
   done: 'Starting five, locked in.',
   full: 'Your five is full. Sub one out to make a change.',
-  taken: 'Spoken for — another squad in your division has this kit.',
+  taken: 'Spoken for — another squad in your division has it.',
   ctaLocked: n => `Continue · ${n}/5`,
   ctaEnabled: 'Continue',
-  ctaInvalid: () => `Finish your five — add ${missingText('a')}.`,
+  ctaInvalid: () => `Finish your five — add ${missingText()}.`,
   takenDivider: 'Taken in this division',
   takenChip: 'Taken',
 };
